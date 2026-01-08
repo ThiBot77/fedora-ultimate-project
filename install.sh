@@ -259,18 +259,51 @@ else
     echo "⚠️  Thème Vanta-Black non trouvé dans $START_DIR/themes/"
 fi
 
-# Appliquer le thème GTK via gsettings
+# Installer nwg-look si pas présent (essentiel pour Wayland/Hyprland)
+if ! command -v nwg-look &> /dev/null; then
+    echo ""
+    echo "📦 Installation de nwg-look (gestion thèmes GTK pour Wayland)..."
+    sudo dnf install -y nwg-look
+    echo "✅ nwg-look installé"
+fi
+
+# Appliquer le thème GTK via gsettings ET nwg-look
+echo ""
+echo "🎨 Application du thème GTK..."
 if command -v gsettings &> /dev/null; then
-    echo "🎨 Application du thème GTK..."
     gsettings set org.gnome.desktop.interface gtk-theme "Vanta-Black" 2>/dev/null || true
     gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-black" 2>/dev/null || true
     gsettings set org.gnome.desktop.interface cursor-theme "Bibata-Modern-Ice" 2>/dev/null || true
-    echo "✅ Thème GTK appliqué via gsettings"
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
+    echo "✅ Thème appliqué via gsettings"
 fi
 
-# Installer les icônes et curseurs si nécessaire
+# Créer la config nwg-look pour persister les paramètres
+if command -v nwg-look &> /dev/null; then
+    mkdir -p ~/.config/nwg-look
+    cat > ~/.config/nwg-look/gsettings << 'EOF'
+gtk-theme-name=Vanta-Black
+icon-theme-name=Tela-circle-black
+cursor-theme-name=Bibata-Modern-Ice
+font-name=Cantarell 10
+cursor-theme-size=20
+gtk-application-prefer-dark-theme=1
+EOF
+    echo "✅ Configuration nwg-look créée"
+fi
+
+# Forcer le rechargement dconf
+if command -v dconf &> /dev/null; then
+    dconf update 2>/dev/null || true
+    echo "✅ dconf mis à jour"
+fi
+
+# Tuer xsettingsd pour forcer le rechargement
+pkill -9 xsettingsd 2>/dev/null || true
+
+# Info sur les icônes et curseurs
 echo ""
-echo "🎨 Vérification des icônes et curseurs..."
+echo "🎨 Icônes et curseurs:"
 echo "💡 Pour installer Tela icons: https://github.com/vinceliuice/Tela-icon-theme"
 echo "💡 Pour installer Bibata cursors: sudo dnf install bibata-cursor-themes"
 
