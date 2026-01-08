@@ -8,8 +8,9 @@ echo "  Fedora Hyprland Setup Script"
 echo "======================================"
 echo ""
 
-# Save the starting directory
-START_DIR="$(pwd)"
+# Save the script's directory (not pwd)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+START_DIR="$SCRIPT_DIR"
 
 # Check if running on Fedora
 if [ ! -f /etc/fedora-release ]; then
