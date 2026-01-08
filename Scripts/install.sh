@@ -65,11 +65,18 @@ main() {
     # Install packages
     if [ $flg_Install -eq 1 ]; then
         source "${scrDir}/install_pkg.sh"
+        install_packages
+        install_third_party
+        install_multimedia
+        install_nvidia
     fi
     
     # Restore configs
     if [ $flg_Restore -eq 1 ]; then
         source "${scrDir}/restore_cfg.sh"
+        restore_configs
+        setup_shell
+        setup_gdm
     fi
     
     echo
