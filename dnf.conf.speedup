@@ -1,4 +1,0 @@
-# Configuration DNF pour accélérer les installations
-max_parallel_downloads=10
-fastestmirror=True
-deltarpm=True
