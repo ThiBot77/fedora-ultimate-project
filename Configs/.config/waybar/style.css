@@ -1,0 +1,31 @@
+* {
+    font-family: "JetBrains Mono", "Font Awesome 6 Free";
+    font-size: 13px;
+}
+
+window#waybar {
+    background-color: rgba(26, 27, 38, 0.9);
+    color: #cdd6f4;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    color: #cdd6f4;
+}
+
+#workspaces button.active {
+    background-color: rgba(137, 180, 250, 0.3);
+    color: #89b4fa;
+}
+
+#clock, #battery, #network, #pulseaudio {
+    padding: 0 10px;
+}
+
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
+    color: #f38ba8;
+}

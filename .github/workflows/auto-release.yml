@@ -1,0 +1,21 @@
+name: Auto Release & Docker Build
+
+on:
+  push:
+    branches:
+      - release
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: 🚀 Auto Release & Docker Build
+    uses: ThiBot77/arcacloud-github-workflows/.github/workflows/auto-release-docker.yml@main
+    with:
+      docker_enabled: false
+      discord_webhook: "https://discordapp.com/api/webhooks/1430546419378421760/NkIjMCLXDb8SNZXcpHyc2YpOzCxI4nSzj5-fGExZSlLjavMbUl9VrXOGvg5Cq_32Wfcf"
+    secrets: inherit
