@@ -96,28 +96,32 @@ mkdir -p ~/Pictures/Screenshots
 mkdir -p ~/.local/share/{themes,icons}
 
 # Copy configuration files
-echo ""Start directory: $START_DIR"
+echo ""
+echo "📋 Copying configuration files..."
+cd "$START_DIR" || exit 1
 
-# Check if .config exists in starting directory
-if [ -d "$START_DIR/.config" ]; then
-    cp -r "$START_DIR/.config/"* ~/.config/
+# Check if .config exists
+if [ -d ".config" ]; then
+    cp -r .config/* ~/.config/ 2>/dev/null
     echo "✅ Configuration files copied"
 else
-    echo "⚠️  .config directory not found"
-    echo "   Start directory: $START_DIR"
-    ls -la "$START_DIR"
+    echo "⚠️  ERROR: .config not found"
+    echo "PWD: $(pwd)"
+    ls -la | head -20
     exit 1
 fi
 
 # Copy zshrc
-if [ -f "$START_DIR/.zshrc" ]; then
-    cp "$START_DIR/.zshrc" ~/.zshrc
+if [ -f ".zshrc" ]; then
+    cp .zshrc ~/.zshrc
     echo "✅ .zshrc copied"
 fi
 
 # Copy gtkrc
-if [ -f "$START_DIR/.gtkrc-2.0" ]; then
-    cp "$START_DIR
+if [ -f ".gtkrc-2.0" ]; then
+    cp .gtkrc-2.0 ~/.gtkrc-2.0
+    echo "✅ GTK 2.0 config copied"
+fi
 # Copy gtkrc
 if [ -f "./.gtkrc-2.0" ] || [ -f "$PWD/.gtkrc-2.0" ]; then
     cp .gtkrc-2.0 ~/.gtkrc-2.0 2>/dev/null || cp "$PWD/.gtkrc-2.0" ~/.gtkrc-2.0
