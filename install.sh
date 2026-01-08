@@ -41,16 +41,12 @@ sudo dnf install -y \
     zsh \
     zsh-autosuggestions \
     zsh-syntax-highlighting \
-    starship \
-    polkit-gnome \
     grim \
     slurp \
     wl-clipboard \
     swayidle \
     swaylock \
     xdg-desktop-portal-hyprland \
-    qt6ct \
-    kvantum \
     pavucontrol \
     network-manager-applet \
     blueman \
@@ -63,6 +59,10 @@ sudo dnf install -y \
     pipewire-pulseaudio \
     thunar \
     firefox || { echo "❌ Package installation failed!"; exit 1; }
+
+# Install starship separately (from copr or cargo)
+echo "Installing Starship..."
+curl -sS https://starship.rs/install.sh | sh -s -- -y
 
 echo "✅ Packages installed successfully"
 
