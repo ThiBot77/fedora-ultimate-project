@@ -92,27 +92,34 @@ mkdir -p ~/.local/share/{themes,icons}
 # Copy configuration files
 echo ""
 echo "📋 Copying configuration files..."
+echo "DEBUG: Current directory: $(pwd)"
+echo "DEBUG: Looking for .config..."
+ls -la | grep config
 
 # Check if .config exists in current directory
-if [ -d ".config" ]; then
-    cp -r .config/* ~/.config/
+if [ -d "./.config" ]; then
+    cp -r ./.config/* ~/.config/
+    echo "✅ Configuration files copied"
+elif [ -d "$PWD/.config" ]; then
+    cp -r "$PWD/.config/"* ~/.config/
     echo "✅ Configuration files copied"
 else
-    echo "⚠️  .config directory not found in current directory"
-    echo "   Please run the script from the fedora-ultimate-project directory"
-    echo "   Example: cd fedora-ultimate-project && ./install.sh"
+    echo "⚠️  .config directory not found"
+    echo "   Current directory: $(pwd)"
+    echo "   Contents:"
+    ls -la
     exit 1
 fi
 
 # Copy zshrc
-if [ -f ".zshrc" ]; then
-    cp .zshrc ~/.zshrc
+if [ -f "./.zshrc" ] || [ -f "$PWD/.zshrc" ]; then
+    cp .zshrc ~/.zshrc 2>/dev/null || cp "$PWD/.zshrc" ~/.zshrc
     echo "✅ .zshrc copied"
 fi
 
 # Copy gtkrc
-if [ -f ".gtkrc-2.0" ]; then
-    cp .gtkrc-2.0 ~/.gtkrc-2.0
+if [ -f "./.gtkrc-2.0" ] || [ -f "$PWD/.gtkrc-2.0" ]; then
+    cp .gtkrc-2.0 ~/.gtkrc-2.0 2>/dev/null || cp "$PWD/.gtkrc-2.0" ~/.gtkrc-2.0
     echo "✅ GTK 2.0 config copied"
 fi
 
