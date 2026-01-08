@@ -5,16 +5,24 @@
 
 echo "🎨 Installing GTK themes..."
 
+# Get the project root directory (3 levels up from the script location)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+THEME_SOURCE="$PROJECT_ROOT/themes/Vanta-Black"
+
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 
-# Install Vanta-Black GTK Theme (from GitHub)
+# Install Vanta-Black GTK Theme (from local themes folder)
 echo "📦 Installing Vanta-Black GTK theme..."
 if [ ! -d "$HOME/.local/share/themes/Vanta-Black" ]; then
-    git clone https://github.com/L4ys/Vanta-Black-GTK.git vanta-black
-    mkdir -p "$HOME/.local/share/themes"
-    cp -r vanta-black/Vanta-Black* "$HOME/.local/share/themes/" 2>/dev/null || cp -r vanta-black/* "$HOME/.local/share/themes/"
-    echo "✅ Vanta-Black GTK theme installed"
+    if [ -d "$THEME_SOURCE" ]; then
+        mkdir -p "$HOME/.local/share/themes"
+        cp -r "$THEME_SOURCE" "$HOME/.local/share/themes/"
+        echo "✅ Vanta-Black GTK theme installed from local source"
+    else
+        echo "⚠️  Vanta-Black theme not found in $THEME_SOURCE"
+    fi
 else
     echo "✅ Vanta-Black GTK theme already installed"
 fi
