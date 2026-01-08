@@ -1,7 +1,5 @@
-# DO NOT EDIT! This file will be overwritten by nwg-look.
-# Any customization should be done in ~/.gtkrc-2.0.mine instead.
+# GTK 2.0 Configuration - Vanta-Black Theme
 
-include "/home/tbechard/.gtkrc-2.0.mime"
 gtk-theme-name="Vanta-Black"
 gtk-icon-theme-name="Tela-circle-black"
 gtk-font-name="Cantarell 10"
