@@ -8,6 +8,9 @@ echo "  Fedora Hyprland Setup Script"
 echo "======================================"
 echo ""
 
+# Save the starting directory
+START_DIR="$(pwd)"
+
 # Check if running on Fedora
 if [ ! -f /etc/fedora-release ]; then
     echo "❌ This script is designed for Fedora Linux"
@@ -81,6 +84,9 @@ fi
 
 fc-cache -fv
 
+# Return to starting directory
+cd "$START_DIR"
+
 # Create necessary directories
 echo ""
 echo "📁 Creating configuration directories..."
@@ -90,33 +96,28 @@ mkdir -p ~/Pictures/Screenshots
 mkdir -p ~/.local/share/{themes,icons}
 
 # Copy configuration files
-echo ""
-echo "📋 Copying configuration files..."
-echo "DEBUG: Current directory: $(pwd)"
-echo "DEBUG: Looking for .config..."
-ls -la | grep config
+echo ""Start directory: $START_DIR"
 
-# Check if .config exists in current directory
-if [ -d "./.config" ]; then
-    cp -r ./.config/* ~/.config/
-    echo "✅ Configuration files copied"
-elif [ -d "$PWD/.config" ]; then
-    cp -r "$PWD/.config/"* ~/.config/
+# Check if .config exists in starting directory
+if [ -d "$START_DIR/.config" ]; then
+    cp -r "$START_DIR/.config/"* ~/.config/
     echo "✅ Configuration files copied"
 else
     echo "⚠️  .config directory not found"
-    echo "   Current directory: $(pwd)"
-    echo "   Contents:"
-    ls -la
+    echo "   Start directory: $START_DIR"
+    ls -la "$START_DIR"
     exit 1
 fi
 
 # Copy zshrc
-if [ -f "./.zshrc" ] || [ -f "$PWD/.zshrc" ]; then
-    cp .zshrc ~/.zshrc 2>/dev/null || cp "$PWD/.zshrc" ~/.zshrc
+if [ -f "$START_DIR/.zshrc" ]; then
+    cp "$START_DIR/.zshrc" ~/.zshrc
     echo "✅ .zshrc copied"
 fi
 
+# Copy gtkrc
+if [ -f "$START_DIR/.gtkrc-2.0" ]; then
+    cp "$START_DIR
 # Copy gtkrc
 if [ -f "./.gtkrc-2.0" ] || [ -f "$PWD/.gtkrc-2.0" ]; then
     cp .gtkrc-2.0 ~/.gtkrc-2.0 2>/dev/null || cp "$PWD/.gtkrc-2.0" ~/.gtkrc-2.0
