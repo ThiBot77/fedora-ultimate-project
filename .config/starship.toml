@@ -1,8 +1,8 @@
 # Starship Configuration
-# Catppuccin Mocha Theme
+# Vanta-Black Theme - Dark & Elegant
 
 format = """
-[╭─](bold purple)\
+[╭─](bold white)\
 $username\
 $hostname\
 $directory\
@@ -18,7 +18,7 @@ $kotlin\
 $python\
 $docker_context\
 $line_break\
-[╰─](bold purple)$character"""
+[╰─](bold white)$character"""
 
 # Timeout for starship commands
 command_timeout = 1000
@@ -28,7 +28,7 @@ success_symbol = "[➜](bold green)"
 error_symbol = "[➜](bold red)"
 
 [username]
-style_user = "bold blue"
+style_user = "bold bright-white"
 style_root = "bold red"
 format = "[$user]($style) "
 disabled = false
@@ -36,14 +36,14 @@ show_always = true
 
 [hostname]
 ssh_only = false
-format = "on [$hostname](bold yellow) "
+format = "on [$hostname](bold bright-white) "
 disabled = false
 
 [directory]
 truncation_length = 3
 truncate_to_repo = true
 format = "in [$path]($style)[$read_only]($read_only_style) "
-style = "bold cyan"
+style = "bold bright-cyan"
 read_only = " 󰌾"
 read_only_style = "red"
 
@@ -57,7 +57,7 @@ read_only_style = "red"
 [git_branch]
 symbol = " "
 format = "on [$symbol$branch]($style) "
-style = "bold purple"
+style = "bold bright-magenta"
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'

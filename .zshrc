@@ -86,15 +86,40 @@ extract() {
     fi
 }
 
-# Auto-suggestions configuration
+# Auto-suggestions configuration - Vanta-Black Theme
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 fi
 
-# Syntax highlighting
+# Syntax highlighting - Vanta-Black Theme colors
 if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    # Custom colors for dark theme
+    ZSH_HIGHLIGHT_STYLES[default]='none'
+    ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
+    ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=cyan,bold'
+    ZSH_HIGHLIGHT_STYLES[alias]='fg=white,bold'
+    ZSH_HIGHLIGHT_STYLES[builtin]='fg=white,bold'
+    ZSH_HIGHLIGHT_STYLES[function]='fg=white,bold'
+    ZSH_HIGHLIGHT_STYLES[command]='fg=white,bold'
+    ZSH_HIGHLIGHT_STYLES[precommand]='fg=white,underline'
+    ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=blue,bold'
+    ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green'
+    ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
+    ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=cyan,underline'
+    ZSH_HIGHLIGHT_STYLES[path_approx]='fg=cyan'
+    ZSH_HIGHLIGHT_STYLES[globbing]='fg=magenta'
+    ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=blue'
+    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=yellow'
+    ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow'
+    ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=magenta'
+    ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=green'
+    ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=green'
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=cyan'
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=cyan'
+    ZSH_HIGHLIGHT_STYLES[redirection]='fg=magenta'
+    ZSH_HIGHLIGHT_STYLES[comment]='fg=240'
 fi
 
 # Fast-syntax-highlighting (Fedora path)
