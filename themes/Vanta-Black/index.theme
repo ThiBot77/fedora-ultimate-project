@@ -1,12 +1,12 @@
 [Desktop Entry]
 Type=X-GNOME-Metatheme
-Name=Graphite-Dark
-Comment=An Flat Gtk+ theme based on Elegant Design
+Name=Vanta-Black
+Comment=Vanta-Black GTK Theme (Flat, dark, modern)
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
-GtkTheme=Graphite-Dark
-MetacityTheme=Graphite-Dark
-IconTheme=Tela-circle-dark
-CursorTheme=Graphite-cursors
+GtkTheme=Vanta-Black
+MetacityTheme=Vanta-Black
+IconTheme=Tela-circle-black
+CursorTheme=Bibata-Modern-Ice
 ButtonLayout=close,minimize,maximize:menu

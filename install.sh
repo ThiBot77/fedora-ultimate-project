@@ -209,39 +209,64 @@ fi
 cp -r .config/* ~/.config/ 2>/dev/null
 echo "✅ Fichiers de configuration copiés"
 
-# Copier .zshrc
-backup_file ~/.zshrc
+# Copier .zshrc et forcer le shell par défaut
+backup_file "$HOME/.zshrc"
 if [ -f ".zshrc" ]; then
-    cp .zshrc ~/.zshrc
+    cp .zshrc "$HOME/.zshrc"
     echo "✅ .zshrc copié"
+    # Forcer le shell par défaut si besoin
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        chsh -s "$(which zsh)" "$USER"
+        echo "⚠️  Déconnecte-toi/reconnecte-toi pour activer zsh par défaut."
+    fi
 fi
 
-# Copier les fichiers de configuration GTK
+# Générer proprement les fichiers de configuration GTK
 echo ""
-echo "🎨 Configuration du thème GTK..."
+echo "🎨 Génération de la configuration du thème GTK..."
+GTK_THEME="Vanta-Black"
+ICON_THEME="Tela-circle-black"
+CURSOR_THEME="Bibata-Modern-Ice"
 
-backup_file ~/.gtkrc-2.0
-backup_file ~/.config/gtk-3.0/settings.ini
-backup_file ~/.config/gtk-4.0/settings.ini
+backup_file "$HOME/.gtkrc-2.0"
+backup_file "$HOME/.config/gtk-3.0/settings.ini"
+backup_file "$HOME/.config/gtk-4.0/settings.ini"
 
-if [ -f ".gtkrc-2.0" ]; then
-    cp .gtkrc-2.0 ~/.gtkrc-2.0
-    echo "✅ Configuration GTK 2.0 copiée"
-fi
+# GTK 3
+mkdir -p "$HOME/.config/gtk-3.0"
+cat > "$HOME/.config/gtk-3.0/settings.ini" <<EOF
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=$ICON_THEME
+gtk-cursor-theme-name=$CURSOR_THEME
+gtk-font-name=Cantarell 10
+gtk-application-prefer-dark-theme=true
+EOF
 
-if [ -f ".config/gtk-3.0/settings.ini" ]; then
-    cp .config/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
-    echo "✅ Configuration GTK 3.0 copiée"
-fi
+# GTK 4
+mkdir -p "$HOME/.config/gtk-4.0"
+cat > "$HOME/.config/gtk-4.0/settings.ini" <<EOF
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=$ICON_THEME
+gtk-cursor-theme-name=$CURSOR_THEME
+gtk-font-name=Cantarell 10
+gtk-application-prefer-dark-theme=true
+EOF
 
-if [ -f ".config/gtk-4.0/settings.ini" ]; then
-    cp .config/gtk-4.0/settings.ini ~/.config/gtk-4.0/settings.ini
-    echo "✅ Configuration GTK 4.0 copiée"
-fi
+# GTK 2
+cat > "$HOME/.gtkrc-2.0" <<EOF
+gtk-theme-name="$GTK_THEME"
+gtk-icon-theme-name="$ICON_THEME"
+gtk-cursor-theme-name="$CURSOR_THEME"
+gtk-font-name="Cantarell 10"
+EOF
+
+echo "✅ Fichiers de configuration GTK générés"
 
 # Rendre les scripts exécutables
-if [ -d ~/.config/hypr/scripts ]; then
-    chmod +x ~/.config/hypr/scripts/*.sh 2>/dev/null
+if [ -d "$HOME/.config/hypr/scripts" ]; then
+    find "$HOME/.config/hypr/scripts" -type f -name '*.sh' -exec chmod +x {} +
     echo "✅ Scripts rendus exécutables"
 fi
 
@@ -250,38 +275,32 @@ fi
 # ========================================
 
 echo ""
-echo "📦 Installation du thème Vanta-Black..."
+echo "📦 FORCE: Installation du thème Vanta-Black..."
 if [ -d "$START_DIR/themes/Vanta-Black" ]; then
     mkdir -p ~/.local/share/themes
-    cp -r "$START_DIR/themes/Vanta-Black" ~/.local/share/themes/
-    echo "✅ Thème Vanta-Black installé"
+    # SUPPRIMER l'ancien et COPIER le nouveau
+    rm -rf ~/.local/share/themes/Vanta-Black
+    cp -rf "$START_DIR/themes/Vanta-Black" ~/.local/share/themes/
+    echo "✅ Thème Vanta-Black RÉINSTALLÉ"
 else
     echo "⚠️  Thème Vanta-Black non trouvé dans $START_DIR/themes/"
 fi
 
-# Installer nwg-look si pas présent (essentiel pour Wayland/Hyprland)
-if ! command -v nwg-look &> /dev/null; then
-    echo ""
-    echo "📦 Installation de nwg-look (gestion thèmes GTK pour Wayland)..."
-    sudo dnf install -y nwg-look
-    echo "✅ nwg-look installé"
-fi
+# FORCER l'application du thème GTK
 
-# Appliquer le thème GTK via gsettings ET nwg-look
 echo ""
-echo "🎨 Application du thème GTK..."
+echo "🔨 Application du thème GTK et des icônes..."
 if command -v gsettings &> /dev/null; then
-    gsettings set org.gnome.desktop.interface gtk-theme "Vanta-Black" 2>/dev/null || true
-    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-black" 2>/dev/null || true
-    gsettings set org.gnome.desktop.interface cursor-theme "Bibata-Modern-Ice" 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
+    gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+    gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_THEME"
     gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
-    echo "✅ Thème appliqué via gsettings"
+    echo "✅ Thème GTK appliqué via gsettings"
 fi
 
-# Créer la config nwg-look pour persister les paramètres
-if command -v nwg-look &> /dev/null; then
-    mkdir -p ~/.config/nwg-look
-    cat > ~/.config/nwg-look/gsettings << 'EOF'
+# Créer config nwg-look pour persister
+mkdir -p ~/.config/nwg-look
+cat > ~/.config/nwg-look/gsettings << 'EOF'
 gtk-theme-name=Vanta-Black
 icon-theme-name=Tela-circle-black
 cursor-theme-name=Bibata-Modern-Ice
@@ -289,17 +308,19 @@ font-name=Cantarell 10
 cursor-theme-size=20
 gtk-application-prefer-dark-theme=1
 EOF
-    echo "✅ Configuration nwg-look créée"
-fi
+echo "✅ Config nwg-look créée"
 
-# Forcer le rechargement dconf
+# KILLER - Tuer les processus qui peuvent bloquer
+echo ""
+echo "💀 Kill des processus bloquants..."
+pkill -9 xsettingsd 2>/dev/null || true
+pkill -9 xsettings 2>/dev/null || true
+
+# Forcer mise à jour dconf
 if command -v dconf &> /dev/null; then
     dconf update 2>/dev/null || true
     echo "✅ dconf mis à jour"
 fi
-
-# Tuer xsettingsd pour forcer le rechargement
-pkill -9 xsettingsd 2>/dev/null || true
 
 # Info sur les icônes et curseurs
 echo ""
@@ -390,7 +411,8 @@ if [ "$XDG_CURRENT_DESKTOP" = "Hyprland" ] || pgrep -x Hyprland > /dev/null; the
     hyprctl reload 2>/dev/null && echo "✅ Hyprland rechargé!" || echo "⚠️  Lance 'hyprctl reload' manuellement"
     
     echo "   Redémarrage de Waybar..."
-    killall waybar 2>/dev/null
+    killall waybar 2>/dev/null || true
+    sleep 1
     waybar &> /dev/null & disown
     echo "✅ Waybar redémarré!"
     
@@ -401,5 +423,26 @@ else
 fi
 
 echo ""
+echo "🔍 Vérification:"
+echo "   - Thème GTK actuel: $(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || echo 'N/A')"
+echo "   - .zshrc modifié: $(stat -c %y ~/.zshrc 2>/dev/null || echo 'N/A')"
+echo "   - Thème Vanta-Black: $([ -d ~/.local/share/themes/Vanta-Black ] && echo 'INSTALLÉ' || echo 'MANQUANT')"
+echo ""
 echo "🎉 Profite de ton setup Hyprland!"
 echo ""
+
+# Vérification post-installation
+echo "==============================="
+echo "🔍 Vérification post-installation :"
+if command -v gsettings &> /dev/null; then
+    echo "- Thème GTK actuel : $(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || echo 'N/A')"
+    echo "- Icônes actuelles : $(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || echo 'N/A')"
+    echo "- Curseur actuel   : $(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null || echo 'N/A')"
+else
+    echo "- gsettings non disponible (pas d'environnement GNOME/Cinnamon)"
+fi
+echo "- Fichier GTK 3 : $(grep gtk-theme-name ~/.config/gtk-3.0/settings.ini 2>/dev/null | cut -d'=' -f2)"
+echo "- Fichier GTK 4 : $(grep gtk-theme-name ~/.config/gtk-4.0/settings.ini 2>/dev/null | cut -d'=' -f2)"
+echo "- Fichier GTK 2 : $(grep gtk-theme-name ~/.gtkrc-2.0 2>/dev/null | cut -d'=' -f2 | tr -d '"')"
+echo "- Shell par défaut : $SHELL"
+echo "==============================="
