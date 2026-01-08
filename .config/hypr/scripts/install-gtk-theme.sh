@@ -46,6 +46,15 @@ rm -rf "$TEMP_DIR"
 echo ""
 echo "✅ GTK themes installation complete!"
 echo ""
+
+# Apply theme with gsettings
+echo "🎨 Applying GTK theme settings..."
+gsettings set org.gnome.desktop.interface gtk-theme 'Vanta-Black' 2>/dev/null
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' 2>/dev/null
+gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice' 2>/dev/null
+echo "✅ Theme settings applied!"
+
+echo ""
 echo "Theme applied:"
 echo "  - GTK: Vanta-Black"
 echo "  - Icons: Papirus Dark"
