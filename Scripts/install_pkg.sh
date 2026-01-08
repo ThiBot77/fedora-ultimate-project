@@ -83,7 +83,7 @@ install_packages() {
     local packages=$(grep -v '^#' "$pkg_file" | grep -v '^$' | tr '\n' ' ')
     
     print_info "Installation de $(echo "$packages" | wc -w) packages..."
-    sudo dnf install -y $packages
+    sudo dnf install -y --skip-unavailable $packages
     
     print_success "Packages installés"
 }
