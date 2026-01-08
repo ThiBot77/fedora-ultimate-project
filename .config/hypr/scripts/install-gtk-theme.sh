@@ -5,10 +5,15 @@
 
 echo "🎨 Installing GTK themes..."
 
-# Get the project root directory (3 levels up from the script location)
+# Get the project root directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 THEME_SOURCE="$PROJECT_ROOT/themes/Vanta-Black"
+
+# Debug: Show paths
+echo "Debug: Script dir = $SCRIPT_DIR"
+echo "Debug: Project root = $PROJECT_ROOT"
+echo "Debug: Theme source = $THEME_SOURCE"
 
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
