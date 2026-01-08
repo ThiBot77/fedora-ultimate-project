@@ -100,8 +100,11 @@ if [ -d "$SCRIPT_DIR/.config" ]; then
     cp -r "$SCRIPT_DIR/.config/"* ~/.config/
     echo "✅ Configuration files copied"
 else
-    echo "⚠️  .config directory not found in script location"
-    echo "   Please manually copy the .config files"
+    echo "⚠️  .config directory not found at: $SCRIPT_DIR/.config"
+    echo "   Current script directory: $SCRIPT_DIR"
+    echo "   Please run the script from the fedora-ultimate-project directory"
+    echo "   Example: cd ~/fedora-ultimate-project && ./install.sh"
+    exit 1
 fi
 
 # Copy zshrc
@@ -116,13 +119,20 @@ if [ -f "$SCRIPT_DIR/.gtkrc-2.0" ]; then
     echo "✅ GTK 2.0 config copied"
 fi
 
-# Make scripts executable
-chmod +x ~/.config/hypr/scripts/*.sh
+# Make scripts executable (only if files exist)
+if [ -d ~/.config/hypr/scripts ]; then
+    chmod +x ~/.config/hypr/scripts/*.sh 2>/dev/null
+    echo "✅ Scripts made executable"
+fi
 
-# Install GTK themes
-echo ""
-echo "🎨 Installing GTK themes..."
-bash ~/.config/hypr/scripts/install-gtk-theme.sh
+# Install GTK themes (only if script exists)
+if [ -f ~/.config/hypr/scripts/install-gtk-theme.sh ]; then
+    echo ""
+    echo "🎨 Installing GTK themes..."
+    bash ~/.config/hypr/scripts/install-gtk-theme.sh
+else
+    echo "⚠️  GTK theme install script not found, skipping..."
+fi
 
 # Install Oh My Zsh (optional, for additional plugins)
 echo ""
