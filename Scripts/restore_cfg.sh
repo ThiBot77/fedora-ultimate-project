@@ -62,8 +62,9 @@ setup_gdm() {
 [Desktop Entry]
 Name=Hyprland
 Comment=An intelligent dynamic tiling Wayland compositor
-Exec=Hyprland
+Exec=uwsm start hyprland-uwsm.desktop
 Type=Application
+DesktopNames=Hyprland
 EOF
     
     print_success "Session Hyprland configurée dans GDM"
