@@ -144,6 +144,6 @@ main() {
     print_success "Installation des packages terminée"
 }
 
-if [ "${BASH_SOURCE[0]}" -eq "$0" ]; then
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     main "$@"
 fi

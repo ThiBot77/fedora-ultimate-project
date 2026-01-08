@@ -79,6 +79,6 @@ main() {
     print_success "Restauration des configurations terminée"
 }
 
-if [ "${BASH_SOURCE[0]}" -eq "$0" ]; then
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     main "$@"
 fi
