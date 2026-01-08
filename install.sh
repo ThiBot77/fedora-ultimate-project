@@ -89,33 +89,30 @@ mkdir -p ~/.config/hypr/scripts
 mkdir -p ~/Pictures/Screenshots
 mkdir -p ~/.local/share/{themes,icons}
 
-# Get the directory where this script is located
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 # Copy configuration files
 echo ""
 echo "📋 Copying configuration files..."
 
-if [ -d "$SCRIPT_DIR/.config" ]; then
-    cp -r "$SCRIPT_DIR/.config/"* ~/.config/
+# Check if .config exists in current directory
+if [ -d ".config" ]; then
+    cp -r .config/* ~/.config/
     echo "✅ Configuration files copied"
 else
-    echo "⚠️  .config directory not found at: $SCRIPT_DIR/.config"
-    echo "   Current script directory: $SCRIPT_DIR"
+    echo "⚠️  .config directory not found in current directory"
     echo "   Please run the script from the fedora-ultimate-project directory"
-    echo "   Example: cd ~/fedora-ultimate-project && ./install.sh"
+    echo "   Example: cd fedora-ultimate-project && ./install.sh"
     exit 1
 fi
 
 # Copy zshrc
-if [ -f "$SCRIPT_DIR/.zshrc" ]; then
-    cp "$SCRIPT_DIR/.zshrc" ~/.zshrc
+if [ -f ".zshrc" ]; then
+    cp .zshrc ~/.zshrc
     echo "✅ .zshrc copied"
 fi
 
 # Copy gtkrc
-if [ -f "$SCRIPT_DIR/.gtkrc-2.0" ]; then
-    cp "$SCRIPT_DIR/.gtkrc-2.0" ~/.gtkrc-2.0
+if [ -f ".gtkrc-2.0" ]; then
+    cp .gtkrc-2.0 ~/.gtkrc-2.0
     echo "✅ GTK 2.0 config copied"
 fi
 
