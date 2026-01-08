@@ -188,7 +188,7 @@ fi
 
 echo ""
 echo "📁 Création des répertoires de configuration..."
-mkdir -p ~/.config/{hypr,waybar,wofi,kitty,dunst,fastfetch,gtk-3.0,gtk-4.0}
+mkdir -p ~/.config/{hypr,waybar,wofi,kitty,dunst,fastfetch}
 mkdir -p ~/.config/hypr/scripts
 mkdir -p ~/Pictures/Screenshots
 mkdir -p ~/.local/share/{themes,icons}
@@ -221,48 +221,6 @@ if [ -f ".zshrc" ]; then
     fi
 fi
 
-# Générer proprement les fichiers de configuration GTK
-echo ""
-echo "🎨 Génération de la configuration du thème GTK..."
-GTK_THEME="Vanta-Black"
-ICON_THEME="Tela-circle-black"
-CURSOR_THEME="Bibata-Modern-Ice"
-
-backup_file "$HOME/.gtkrc-2.0"
-backup_file "$HOME/.config/gtk-3.0/settings.ini"
-backup_file "$HOME/.config/gtk-4.0/settings.ini"
-
-# GTK 3
-mkdir -p "$HOME/.config/gtk-3.0"
-cat > "$HOME/.config/gtk-3.0/settings.ini" <<EOF
-[Settings]
-gtk-theme-name=$GTK_THEME
-gtk-icon-theme-name=$ICON_THEME
-gtk-cursor-theme-name=$CURSOR_THEME
-gtk-font-name=Cantarell 10
-gtk-application-prefer-dark-theme=true
-EOF
-
-# GTK 4
-mkdir -p "$HOME/.config/gtk-4.0"
-cat > "$HOME/.config/gtk-4.0/settings.ini" <<EOF
-[Settings]
-gtk-theme-name=$GTK_THEME
-gtk-icon-theme-name=$ICON_THEME
-gtk-cursor-theme-name=$CURSOR_THEME
-gtk-font-name=Cantarell 10
-gtk-application-prefer-dark-theme=true
-EOF
-
-# GTK 2
-cat > "$HOME/.gtkrc-2.0" <<EOF
-gtk-theme-name="$GTK_THEME"
-gtk-icon-theme-name="$ICON_THEME"
-gtk-cursor-theme-name="$CURSOR_THEME"
-gtk-font-name="Cantarell 10"
-EOF
-
-echo "✅ Fichiers de configuration GTK générés"
 
 # Rendre les scripts exécutables
 if [ -d "$HOME/.config/hypr/scripts" ]; then
@@ -270,74 +228,12 @@ if [ -d "$HOME/.config/hypr/scripts" ]; then
     echo "✅ Scripts rendus exécutables"
 fi
 
-# ========================================
-# Installation du thème GTK Vanta-Black
-# ========================================
-
-echo ""
-echo "📦 FORCE: Installation du thème Vanta-Black..."
-if [ -d "$START_DIR/themes/Vanta-Black" ]; then
-    mkdir -p ~/.local/share/themes
-    # SUPPRIMER l'ancien et COPIER le nouveau
-    rm -rf ~/.local/share/themes/Vanta-Black
-    cp -rf "$START_DIR/themes/Vanta-Black" ~/.local/share/themes/
-    echo "✅ Thème Vanta-Black RÉINSTALLÉ"
-else
-    echo "⚠️  Thème Vanta-Black non trouvé dans $START_DIR/themes/"
-fi
-
-# FORCER l'application du thème GTK
-
-echo ""
-echo "🔨 Application du thème GTK et des icônes..."
-if command -v gsettings &> /dev/null; then
-    gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
-    gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
-    gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_THEME"
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
-    echo "✅ Thème GTK appliqué via gsettings"
-fi
-
-# Créer config nwg-look pour persister
-mkdir -p ~/.config/nwg-look
-cat > ~/.config/nwg-look/gsettings << 'EOF'
-gtk-theme-name=Vanta-Black
-icon-theme-name=Tela-circle-black
-cursor-theme-name=Bibata-Modern-Ice
-font-name=Cantarell 10
-cursor-theme-size=20
-gtk-application-prefer-dark-theme=1
-EOF
-echo "✅ Config nwg-look créée"
-
-# KILLER - Tuer les processus qui peuvent bloquer
-echo ""
-echo "💀 Kill des processus bloquants..."
-pkill -9 xsettingsd 2>/dev/null || true
-pkill -9 xsettings 2>/dev/null || true
-
-# Forcer mise à jour dconf
-if command -v dconf &> /dev/null; then
-    dconf update 2>/dev/null || true
-    echo "✅ dconf mis à jour"
-fi
-
-# Info sur les icônes et curseurs
-echo ""
-echo "🎨 Icônes et curseurs:"
-echo "💡 Pour installer Tela icons: https://github.com/vinceliuice/Tela-icon-theme"
-echo "💡 Pour installer Bibata cursors: sudo dnf install bibata-cursor-themes"
 
 # ========================================
 # Configuration finale
 # ========================================
 
 # Installer des icônes et thèmes additionnels si demandé
-if [ -f ~/.config/hypr/scripts/install-gtk-theme.sh ]; then
-    echo ""
-    echo "🎨 Exécution du script d'installation de thèmes GTK..."
-    bash ~/.config/hypr/scripts/install-gtk-theme.sh
-fi
 
 # Configuration du wallpaper
 echo ""
@@ -384,24 +280,6 @@ echo "   SUPER + F            → Plein écran"
 echo "   SUPER + V            → Basculer en mode flottant"
 echo "   SUPER + 1-9          → Changer d'espace de travail"
 echo "   SUPER + SHIFT + S    → Capture d'écran"
-echo ""
-echo "4. 📝 Fichiers de configuration principaux:"
-echo "   Hyprland: ~/.config/hypr/hyprland.conf"
-echo "   Waybar:   ~/.config/waybar/config"
-echo "   Wofi:     ~/.config/wofi/config"
-echo "   Kitty:    ~/.config/kitty/kitty.conf"
-echo "   Zsh:      ~/.zshrc"
-echo "   Starship: ~/.config/starship.toml"
-echo "   GTK:      ~/.config/gtk-3.0/settings.ini"
-echo ""
-echo "5. 🎨 Thème installé:"
-echo "   GTK:    Vanta-Black"
-echo "   Icons:  Tela-circle-black (à installer)"
-echo "   Cursor: Bibata-Modern-Ice (installer avec: sudo dnf install bibata-cursor-themes)"
-echo ""
-echo "6. 🔧 Outils utiles:"
-echo "   nwg-look: Interface graphique pour configurer les thèmes GTK"
-echo "   Usage: nwg-look"
 echo ""
 
 # Check if already on Hyprland and reload
