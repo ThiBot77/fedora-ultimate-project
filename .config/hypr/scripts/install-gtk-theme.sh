@@ -1,23 +1,22 @@
 #!/bin/bash
 
 # GTK Theme Installation Script
-# Installs Catppuccin GTK themes, Papirus icons, and cursors
+# Installs Vanta-Black GTK theme, Papirus icons, and Bibata cursors
 
 echo "🎨 Installing GTK themes..."
 
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 
-# Install Catppuccin GTK Theme
-echo "📦 Installing Catppuccin GTK theme..."
-if [ ! -d "$HOME/.local/share/themes/Catppuccin-Mocha-Standard-Mauve-Dark" ]; then
-    git clone https://github.com/catppuccin/gtk.git catppuccin-gtk
-    cd catppuccin-gtk
+# Install Vanta-Black GTK Theme (from GitHub)
+echo "📦 Installing Vanta-Black GTK theme..."
+if [ ! -d "$HOME/.local/share/themes/Vanta-Black" ]; then
+    git clone https://github.com/L4ys/Vanta-Black-GTK.git vanta-black
     mkdir -p "$HOME/.local/share/themes"
-    cp -r themes/* "$HOME/.local/share/themes/"
-    echo "✅ Catppuccin GTK theme installed"
+    cp -r vanta-black/Vanta-Black* "$HOME/.local/share/themes/" 2>/dev/null || cp -r vanta-black/* "$HOME/.local/share/themes/"
+    echo "✅ Vanta-Black GTK theme installed"
 else
-    echo "✅ Catppuccin GTK theme already installed"
+    echo "✅ Vanta-Black GTK theme already installed"
 fi
 
 cd "$TEMP_DIR"
@@ -31,17 +30,16 @@ else
     echo "✅ Papirus icon theme already installed"
 fi
 
-# Install Catppuccin Cursors
-echo "📦 Installing Catppuccin cursors..."
-if [ ! -d "$HOME/.local/share/icons/Catppuccin-Mocha-Mauve-Cursors" ]; then
+# Install Bibata Cursors
+echo "📦 Installing Bibata cursors..."
+if [ ! -d "$HOME/.local/share/icons/Bibata-Modern-Ice" ]; then
     cd "$TEMP_DIR"
-    git clone https://github.com/catppuccin/cursors.git catppuccin-cursors
-    cd catppuccin-cursors
+    wget https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Ice.tar.xz
     mkdir -p "$HOME/.local/share/icons"
-    cp -r cursors/Catppuccin-Mocha-Mauve-Cursors "$HOME/.local/share/icons/"
-    echo "✅ Catppuccin cursors installed"
+    tar -xf Bibata-Modern-Ice.tar.xz -C "$HOME/.local/share/icons/"
+    echo "✅ Bibata cursors installed"
 else
-    echo "✅ Catppuccin cursors already installed"
+    echo "✅ Bibata cursors already installed"
 fi
 
 # Cleanup
@@ -52,6 +50,6 @@ echo ""
 echo "✅ GTK themes installation complete!"
 echo ""
 echo "Theme applied:"
-echo "  - GTK: Catppuccin Mocha Mauve"
+echo "  - GTK: Vanta-Black"
 echo "  - Icons: Papirus Dark"
-echo "  - Cursor: Catppuccin Mocha Mauve"
+echo "  - Cursor: Bibata Modern Ice"
