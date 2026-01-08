@@ -155,7 +155,7 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     sudo dnf install -y \
         htop \
-        neofetch \
+        fastfetch \
         git \
         vim \
         wget \
