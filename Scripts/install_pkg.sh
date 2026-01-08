@@ -94,8 +94,7 @@ install_multimedia() {
     # RPM Fusion
     if ! pkg_installed rpmfusion-free-release; then
         print_info "Activation de RPM Fusion..."
-        sudothird_party
-    install_ dnf install -y \
+        sudo dnf install -y \
             "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
             "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
     fi
