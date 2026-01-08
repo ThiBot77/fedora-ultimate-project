@@ -137,6 +137,15 @@ if [ -d ~/.config/hypr/scripts ]; then
     echo "✅ Scripts made executable"
 fi
 
+# Copy Vanta-Black theme from local themes folder
+if [ -d "$START_DIR/themes/Vanta-Black" ]; then
+    echo ""
+    echo "📦 Copying Vanta-Black GTK theme..."
+    mkdir -p ~/.local/share/themes
+    cp -r "$START_DIR/themes/Vanta-Black" ~/.local/share/themes/
+    echo "✅ Vanta-Black theme copied"
+fi
+
 # Install GTK themes (only if script exists)
 if [ -f ~/.config/hypr/scripts/install-gtk-theme.sh ]; then
     echo ""
