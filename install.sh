@@ -30,6 +30,7 @@ echo 'deltarpm=True' | sudo tee -a /etc/dnf/dnf.conf
 # sudo dnf update -y
 
 # Install Hyprland and dependencies
+echo "Installing packages (this may take a while)..."
 sudo dnf install -y \
     hyprland \
     waybar \
@@ -61,7 +62,9 @@ sudo dnf install -y \
     pipewire-alsa \
     pipewire-pulseaudio \
     thunar \
-    firefox
+    firefox || { echo "❌ Package installation failed!"; exit 1; }
+
+echo "✅ Packages installed successfully"
 
 # Install fonts
 echo ""
