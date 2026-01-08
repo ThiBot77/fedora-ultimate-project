@@ -43,37 +43,52 @@ print_msg "Début de l'installation des paquets pour Hyprland..."
 # =============================================================================
 # Update system
 # =============================================================================
-print_msg "Mise à jour du système..."
-#sudo dnf update -y
-print_success "Système mis à jour"
+print_msg "Mise à jour du système (optionnel)..."
+read -p "Voulez-vous mettre à jour le système? (y/N) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    sudo dnf update -y
+    print_success "Système mis à jour"
+else
+    print_success "Mise à jour ignorée"
+fi
 
 # =============================================================================
-# Install Wayland utilities
+# Check and install missing packages
 # =============================================================================
-print_msg "Installation des utilitaires Wayland..."
-sudo dnf install -y \
-    waybar \
-    dunst \
-    polkit-gnome \
-    rofi-wayland \
-    grim \
-    slurp \
-    wl-clipboard \
-    brightnessctl \
-    pipewire-utils \
-    xdg-desktop-portal-hyprland
-print_success "Utilitaires Wayland installés"
+print_msg "Vérification des paquets installés..."
 
-# =============================================================================
-# Install terminal and applications
-# =============================================================================
-print_msg "Installation du terminal et applications..."
-sudo dnf install -y \
-    kitty \
-    nautilus \
-    pavucontrol \
-    network-manager-applet
-print_success "Applications installées"
+PACKAGES=(
+    "waybar"
+    "dunst"
+    "polkit-gnome"
+    "rofi-wayland"
+    "grim"
+    "slurp"
+    "wl-clipboard"
+    "brightnessctl"
+    "pipewire-utils"
+    "xdg-desktop-portal-hyprland"
+    "kitty"
+    "nautilus"
+    "pavucontrol"
+    "network-manager-applet"
+)
+
+MISSING_PACKAGES=()
+for pkg in "${PACKAGES[@]}"; do
+    if ! dnf list installed "$pkg" &> /dev/null; then
+        MISSING_PACKAGES+=("$pkg")
+    fi
+done
+
+if [ ${#MISSING_PACKAGES[@]} -eq 0 ]; then
+    print_success "Tous les paquets sont déjà installés"
+else
+    print_msg "Paquets à installer: ${MISSING_PACKAGES[*]}"
+    sudo dnf install -y "${MISSING_PACKAGES[@]}"
+    print_success "Paquets installés"
+fi
 
 # =============================================================================
 # Install Nerd Fonts
