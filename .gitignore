@@ -1,5 +1,23 @@
+# Fichiers de cache et données temporaires
+.cache/
+*.cache
+
+# Logs d'installation
+Logs/
 *.log
-*.bak
+
+# Fichiers temporaires et sauvegardes
+*.tmp
+*.temp
 *.swp
+*.swo
+*.bak
+*.backup
 *~
+
+# Fichiers système
 .DS_Store
+Thumbs.db
+
+# Configuration locale
+local_config.sh
